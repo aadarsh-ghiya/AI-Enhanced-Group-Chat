@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Enhanced Group Chat</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <section class="panel">
+      <div class="header">
+        <h1>AI Enhanced Group Chat</h1>
+        <p>Sign up or log in to start chatting.</p>
+      </div>
+
+      <div id="auth-panel" class="auth-grid">
+        <form id="signup-form" class="card">
+          <h2>Sign up</h2>
+          <label>
+            Username
+            <input id="signup-username" type="text" minlength="3" maxlength="50" required />
+          </label>
+          <label>
+            Password
+            <input id="signup-password" type="password" minlength="6" maxlength="128" required />
+          </label>
+          <button type="submit">Create account</button>
+        </form>
+
+        <form id="login-form" class="card">
+          <h2>Log in</h2>
+          <label>
+            Username
+            <input id="login-username" type="text" required />
+          </label>
+          <label>
+            Password
+            <input id="login-password" type="password" required />
+          </label>
+          <button type="submit">Log in</button>
+        </form>
+      </div>
+
+      <div id="chat-panel" class="chat hidden">
+        <div class="toolbar">
+          <div id="whoami" class="whoami"></div>
+          <button id="logout-btn" type="button" class="ghost">Log out</button>
+        </div>
+
+        <div id="messages" class="messages"></div>
+
+        <form id="message-form" class="composer">
+          <input id="message-input" type="text" placeholder="Type a message..." maxlength="4000" required />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+
+      <div id="status" class="status"></div>
+    </section>
+  </main>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
