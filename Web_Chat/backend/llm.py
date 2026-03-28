@@ -1,8 +1,7 @@
-import os
 import httpx
 
-LLM_API_BASE = os.getenv("LLM_API_BASE", "http://localhost:11434/v1")
-LLM_MODEL = os.getenv("LLM_MODEL", "llama3:instruct")
+OLLAMA_URL = "http://localhost:11434/api/chat"
+MODEL_NAME = "llama3:instruct" 
 
 
 async def generate_reply(user_input: str, username: str, history=None) -> str:
@@ -10,14 +9,12 @@ async def generate_reply(user_input: str, username: str, history=None) -> str:
 
     messages = []
 
-    # Add conversation history
     for msg in history:
         messages.append({
-            "role": msg["role"],
-            "content": msg["content"]
+            "role": msg.get("role", "user"),
+            "content": msg.get("content", "")
         })
 
-    # Add current message
     messages.append({
         "role": "user",
         "content": user_input
@@ -26,18 +23,26 @@ async def generate_reply(user_input: str, username: str, history=None) -> str:
     try:
         async with httpx.AsyncClient(timeout=60.0) as client:
             response = await client.post(
-                f"{LLM_API_BASE}/chat/completions",
+                OLLAMA_URL,
                 json={
-                    "model": LLM_MODEL,
+                    "model": MODEL_NAME,
                     "messages": messages,
-                    "temperature": 0.7
+                    "stream": False
                 }
             )
 
+        print("OLLAMA RAW:", response.text)
+
         data = response.json()
 
-        return data["choices"][0]["message"]["content"]
+        reply = data.get("message", {}).get("content")
+
+        if not reply:
+            print("Unexpected Ollama response:", data)
+            return " No response from model"
+
+        return reply.strip()
 
     except Exception as e:
-        print("LLM ERROR:", e)
-        return "Sorry, I couldn't generate a response right now."
+        print("LLM ERROR:", str(e))
+        return " Error generating response"

@@ -41,6 +41,12 @@ app.add_middleware(
 
 app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
 
+app.mount(
+    "/.well-known",
+    StaticFiles(directory=str(FRONTEND_DIR / ".well-known")),
+    name="well-known",
+)
+
 
 class SignupIn(BaseModel):
     username: str = Field(min_length=3, max_length=50)

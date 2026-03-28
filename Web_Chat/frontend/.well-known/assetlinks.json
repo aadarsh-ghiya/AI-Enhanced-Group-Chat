@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.athish.groupchat",
+      "sha256_cert_fingerprints": [
+        "B9:BD:DC:E6:09:61:7B:31:6B:6B:6F:CD:2B:F6:69:3B:C3:11:74:75:95:EB:10:16:3D:6D:F0:8E:2E:26:96:37"
+      ]
+    }
+  }
+]

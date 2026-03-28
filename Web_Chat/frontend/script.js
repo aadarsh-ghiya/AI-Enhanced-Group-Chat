@@ -1,6 +1,10 @@
 const TOKEN_KEY = "chat_access_token";
 const USER_KEY = "chat_username";
 
+// AUTO-DETECT BASE URL 
+const BASE_URL = `${window.location.protocol}//${window.location.host}`;
+const WS_URL = BASE_URL.replace("http", "ws");
+
 const els = {
   authPanel: document.getElementById("auth-panel"),
   chatPanel: document.getElementById("chat-panel"),
@@ -54,7 +58,9 @@ function renderMessage(message) {
 
   const meta = document.createElement("div");
   meta.className = "meta";
-  const when = message.created_at ? new Date(message.created_at).toLocaleString() : "";
+  const when = message.created_at
+    ? new Date(message.created_at).toLocaleString()
+    : "";
   meta.textContent = `${message.username} • ${when}`;
 
   const body = document.createElement("div");
@@ -72,10 +78,9 @@ function clearMessages() {
 }
 
 async function loadMessages() {
-  const res = await fetch("/api/messages");
-  if (!res.ok) {
-    throw new Error("Could not load messages");
-  }
+  const res = await fetch(`${BASE_URL}/api/messages`);
+  if (!res.ok) throw new Error("Could not load messages");
+
   const messages = await res.json();
   clearMessages();
   messages.forEach(renderMessage);
@@ -94,8 +99,9 @@ function openSocket() {
   const token = getToken();
   if (!token) return;
 
-  const scheme = window.location.protocol === "https:" ? "wss" : "ws";
-  socket = new WebSocket(`${scheme}://${window.location.host}/ws/chat?token=${encodeURIComponent(token)}`);
+  socket = new WebSocket(
+    `${WS_URL}/ws/chat?token=${encodeURIComponent(token)}`
+  );
 
   socket.onopen = () => setStatus("Connected");
   socket.onclose = () => setStatus("Disconnected");
@@ -104,11 +110,12 @@ function openSocket() {
   socket.onmessage = (event) => {
     try {
       const payload = JSON.parse(event.data);
+
       if (payload.type === "message" && payload.message) {
         renderMessage(payload.message);
       }
-    } catch {
-      // ignore malformed socket payloads
+    } catch (e) {
+      console.error("Socket parse error:", e);
     }
   };
 }
@@ -124,7 +131,7 @@ async function bootstrapSession() {
   }
 
   try {
-    const res = await fetch("/api/me", {
+    const res = await fetch(`${BASE_URL}/api/me`, {
       headers: authHeaders(),
     });
 
@@ -137,10 +144,13 @@ async function bootstrapSession() {
 
     const data = await res.json();
     const name = data.username || username || "user";
+
     els.whoami.textContent = `Signed in as ${name}`;
     setAuthedView(true);
+
     await loadMessages();
     openSocket();
+
     setStatus("Connected");
   } catch {
     clearSession();
@@ -155,7 +165,7 @@ async function handleSignup(event) {
   const username = els.signupUsername.value.trim();
   const password = els.signupPassword.value;
 
-  const res = await fetch("/api/auth/signup", {
+  const res = await fetch(`${BASE_URL}/api/auth/signup`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password }),
@@ -171,11 +181,12 @@ async function handleSignup(event) {
   setSession(data.access_token, username);
   els.whoami.textContent = `Signed in as ${username}`;
   setAuthedView(true);
+
   els.signupForm.reset();
   els.loginForm.reset();
+
   await loadMessages();
   openSocket();
-  setStatus("Connected");
 }
 
 async function handleLogin(event) {
@@ -184,7 +195,7 @@ async function handleLogin(event) {
   const username = els.loginUsername.value.trim();
   const password = els.loginPassword.value;
 
-  const res = await fetch("/api/auth/login", {
+  const res = await fetch(`${BASE_URL}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password }),
@@ -200,13 +211,13 @@ async function handleLogin(event) {
   setSession(data.access_token, username);
   els.whoami.textContent = `Signed in as ${username}`;
   setAuthedView(true);
+
   els.signupForm.reset();
   els.loginForm.reset();
+
   await loadMessages();
   openSocket();
-  setStatus("Connected");
 }
-
 
 async function handleSendMessage(event) {
   event.preventDefault();
@@ -214,7 +225,7 @@ async function handleSendMessage(event) {
   const content = els.messageInput.value.trim();
   if (!content) return;
 
-  const res = await fetch("/api/messages", {
+  const res = await fetch(`${BASE_URL}/api/messages`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -232,6 +243,7 @@ async function handleSendMessage(event) {
 
   els.messageInput.value = "";
 
+  // fallback if websocket fails
   if (!socket || socket.readyState !== WebSocket.OPEN) {
     renderMessage(data);
   }
@@ -241,10 +253,12 @@ function handleLogout() {
   clearSession();
   closeSocket();
   clearMessages();
+
   els.whoami.textContent = "";
   els.signupForm.reset();
   els.loginForm.reset();
   els.messageForm.reset();
+
   setAuthedView(false);
   setStatus("Signed out");
 }
