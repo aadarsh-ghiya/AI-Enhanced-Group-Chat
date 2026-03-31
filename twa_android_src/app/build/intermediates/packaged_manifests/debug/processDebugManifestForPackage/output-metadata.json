@@ -4,7 +4,7 @@
     "type": "PACKAGED_MANIFESTS",
     "kind": "Directory"
   },
-  "applicationId": "com.helloworld.groupchat.twa",
+  "applicationId": "com.athish.groupchat",
   "variantName": "debug",
   "elements": [
     {

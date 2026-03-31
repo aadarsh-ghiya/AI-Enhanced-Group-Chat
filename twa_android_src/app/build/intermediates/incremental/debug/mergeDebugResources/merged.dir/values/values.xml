@@ -82,8 +82,19 @@
     <item name="title" type="id"/>
     <integer name="status_bar_notification_info_maxnum">999</integer>
     <string name="app_name">Android Browser Helper</string>
+    <string name="asset_statements">
+        [
+          {
+            "relation": ["delegate_permission/common.handle_all_urls"],
+            "target": {
+              "namespace": "web",
+              "site": "https://bettyann-unfirm-seasonedly.ngrok-free.dev"
+            }
+          }
+        ]
+    </string>
     <string name="copy_toast_msg">Link copied to clipboard</string>
-    <string name="defaultUrl">http://192.168.1.96:8001/</string>
+    <string name="defaultUrl">https://bettyann-unfirm-seasonedly.ngrok-free.dev/</string>
     <string name="fallback_menu_item_copy_link">Copy link</string>
     <string name="fallback_menu_item_open_in_browser">Open in browser</string>
     <string name="fallback_menu_item_share_link">Share link</string>
@@ -123,23 +134,14 @@
         <attr format="reference" name="fontProviderCerts"/>
         
         <attr name="fontProviderFetchStrategy">
-            <!-- The blocking font fetch works as follows.
-              First, check the local cache, then if the requested font is not cached, request the
-              font from the provider and wait until it is finished.  You can change the length of
-              the timeout by modifying fontProviderFetchTimeout.  If the timeout happens, the
-              default typeface will be used instead. -->
+            
             <enum name="blocking" value="0"/>
-            <!-- The async font fetch works as follows.
-              First, check the local cache, then if the requeted font is not cached, trigger a
-              request the font and continue with layout inflation. Once the font fetch succeeds, the
-              target text view will be refreshed with the downloaded font data. The
-              fontProviderFetchTimeout will be ignored if async loading is specified. -->
+            
             <enum name="async" value="1"/>
         </attr>
         
         <attr format="integer" name="fontProviderFetchTimeout">
-            <!-- A special value for the timeout. In this case, the blocking font fetching will not
-              timeout and wait until a reply is received from the font provider. -->
+            
             <enum name="forever" value="-1"/>
         </attr>
     </declare-styleable>

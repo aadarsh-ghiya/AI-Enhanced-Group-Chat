@@ -1,26 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34"/>
+    <uses-sdk
+        android:minSdkVersion="21"
+        android:targetSdkVersion="34" />
+
     <application
         android:label="GroupChat"
         android:icon="@mipmap/ic_launcher"
         android:allowBackup="true"
-        android:supportsRtl="true"
-        >
+        android:supportsRtl="true">
 
-        <!-- LauncherActivity from android-browser-helper opens the TWA -->
+
+        <meta-data
+            android:name="asset_statements"
+            android:resource="@string/asset_statements" />
+
+        <!-- LauncherActivity from android-browser-helper -->
         <activity
             android:name="com.google.androidbrowserhelper.trusted.LauncherActivity"
             android:exported="true">
-            <meta-data android:name="android.support.customtabs.trusted.DEFAULT_URL"
-                android:value="@string/defaultUrl"/>
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+
+
+            <meta-data
+                android:name="android.support.customtabs.trusted.DEFAULT_URL"
+                android:value="@string/defaultUrl" />
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Note: "After uncommenting this block of code remove "/>" from below line"
+                    <data
+                    android:scheme="https"/>
+                    android:host="your_host_name" />  -->
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
 
     </application>
+
 </manifest>

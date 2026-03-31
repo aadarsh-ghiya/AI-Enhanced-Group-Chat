@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.helloworld.groupchat.twa"
+    package="com.athish.groupchat"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -27,8 +27,11 @@
         android:label="GroupChat"
         android:supportsRtl="true"
         android:testOnly="true" >
+        <meta-data
+            android:name="asset_statements"
+            android:resource="@string/asset_statements" />
 
-        <!-- LauncherActivity from android-browser-helper opens the TWA -->
+        <!-- LauncherActivity from android-browser-helper -->
         <activity
             android:name="com.google.androidbrowserhelper.trusted.LauncherActivity"
             android:exported="true" >
@@ -36,6 +39,16 @@
                 android:name="android.support.customtabs.trusted.DEFAULT_URL"
                 android:value="@string/defaultUrl" />
 
+            <intent-filter android:autoVerify="true" >
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="bettyann-unfirm-seasonedly.ngrok-free.dev"
+                    android:scheme="https" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

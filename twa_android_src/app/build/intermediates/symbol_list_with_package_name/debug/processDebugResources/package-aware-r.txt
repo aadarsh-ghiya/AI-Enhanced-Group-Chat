@@ -1,4 +1,4 @@
-com.helloworld.groupchat.twa
+com.athish.groupchat
 attr alpha
 attr font
 attr fontProviderAuthority
@@ -140,6 +140,7 @@ layout notification_template_part_chronometer
 layout notification_template_part_time
 mipmap ic_launcher
 string app_name
+string asset_statements
 string copy_toast_msg
 string defaultUrl
 string fallback_menu_item_copy_link

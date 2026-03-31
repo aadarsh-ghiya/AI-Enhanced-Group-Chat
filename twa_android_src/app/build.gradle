@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.helloworld.groupchat.twa'
+    namespace 'com.agent_sphere.groupchat'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.helloworld.groupchat.twa"
+        applicationId "com.agent_sphere.groupchat"
         minSdk 21
         targetSdk 34
         versionCode 1

@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="defaultUrl">http://192.168.1.96:8001/</string>
+    <string name="asset_statements">
+        [
+          {
+            "relation": ["delegate_permission/common.handle_all_urls"],
+            "target": {
+              "namespace": "web",
+              "site": "https://bettyann-unfirm-seasonedly.ngrok-free.dev"
+            }
+          }
+        ]
+    </string>
+    <string name="defaultUrl">https://bettyann-unfirm-seasonedly.ngrok-free.dev/</string>
 </resources>
